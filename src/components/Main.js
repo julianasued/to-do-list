@@ -15,6 +15,22 @@ export default class Main extends Component {
         index: -1,
     };
 
+    componentDidMount() {
+        const tarefas = JSON.parse(localStorage.getItem('tarefas'));
+
+        if(!tarefas) return;
+
+        this.setState({tarefas});
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { tarefas } = this.state
+
+        if (tarefas === prevState.tarefas) return;
+
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         const { tarefas, index } = this.state
@@ -68,7 +84,8 @@ export default class Main extends Component {
     render(){
         const {novaTarefa, tarefas} = this.state;
 
-        return <div className="main">
+        return (
+        <div className="main">
             <h1>Lista de Tarefas</h1>
 
             <form action="#" className="form"  onSubmit={this.handleSubmit}>
@@ -90,5 +107,6 @@ export default class Main extends Component {
                 ))}
             </ul>
         </div>
+        );
     }
 }
